@@ -26,6 +26,7 @@ function procesarFetch(numsecs, user) {
     estado = document.getElementById('status');
     id = document.getElementById('id');
     email = document.getElementById('email');
+    nombre = document.getElementById('name');
 
     fetch(BASE_URL + user)
     .then(res => {
@@ -41,6 +42,18 @@ function procesarFetch(numsecs, user) {
             id.innerHTML = data.data.id;
             email.innerHTML = data.data.email;
             estado.innerHTML = 200;
+
+            return fetch(POSTMAN_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(data => {
+                nombre.innerHTML = data.json.data['first_name'];
+            })
         }, numsecs*1000);
     })
     .catch(error => {
